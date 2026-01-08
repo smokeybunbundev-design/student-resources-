@@ -5,7 +5,8 @@
         body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; margin: 0; text-align: center; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
         .card { background: #1c212c; border-radius: 12px; padding: 20px; border: 1px solid #2d333f; cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: #38bdf8; box-shadow: 0 5px 15px rgba(56,189,248,0.2); }
+        .card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        h1 { color: #38bdf8; font-weight: 200; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -14,18 +15,12 @@
         <div class="card" onclick="sendToParent('../sys_lib/tool_01/index.html')">PolyTrack</div>
         <div class="card" onclick="sendToParent('../sys_lib/tool_02/index.html')">Slope</div>
         <div class="card" onclick="sendToParent('../sys_lib/tool_03/index.html')">Retro Bowl</div>
-        </div>
-
+        <div class="card" onclick="sendToParent('../sys_lib/tool_04/index.html')">BitLife</div>
+    </div>
     <script>
         function sendToParent(url) {
-            // Convert relative path to absolute path
             const fullURL = new URL(url, window.location.href).href;
-            
-            // Send the URL to the index.html page
-            window.parent.postMessage({
-                type: "LAUNCH_GAME",
-                url: fullURL
-            }, "*");
+            window.parent.postMessage({ type: "LAUNCH_GAME", url: fullURL }, "*");
         }
     </script>
 </body>
