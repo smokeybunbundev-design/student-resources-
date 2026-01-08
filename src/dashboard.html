@@ -4,76 +4,58 @@
     <style>
         * { box-sizing: border-box; }
         body { 
-            background: #0b0e14; 
+            background: transparent; 
             color: #e8eaed; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            padding: 40px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            margin: 0; padding: 60px 20px; 
+            display: flex; flex-direction: column; align-items: center;
         }
 
         h1 { 
-            font-weight: 300; 
-            letter-spacing: 4px; 
-            color: #38bdf8; 
-            text-transform: uppercase; 
-            margin-bottom: 40px;
-            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            font-weight: 200; letter-spacing: 5px; color: #38bdf8; 
+            margin-bottom: 50px; text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
 
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 25px; 
-            width: 100%; 
-            max-width: 1000px; 
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+            gap: 30px; width: 100%; max-width: 1100px; 
         }
 
         .card { 
-            position: relative;
-            background: rgba(28, 33, 44, 0.6); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px; 
-            padding: 30px 20px; 
+            background: rgba(30, 32, 35, 0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px; 
+            padding: 18px; 
             cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
+            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            gap: 18px;
         }
 
-        /* Hover Glow Effect */
         .card:hover { 
-            transform: translateY(-10px); 
+            transform: scale(1.05);
+            background: rgba(45, 48, 53, 0.8);
             border-color: #38bdf8;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
-            background: rgba(35, 41, 55, 0.9);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
+        .game-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #121212;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .card:hover::before { left: 100%; }
-
-        .card-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
-        .card-tag { font-size: 12px; color: #70757a; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* Smooth launch button animation */
-        .status-dot {
-            width: 8px; height: 8px; 
-            background: #34a853; 
-            border-radius: 50%; 
-            display: inline-block; 
-            margin-right: 8px;
-            box-shadow: 0 0 8px #34a853;
-        }
+        .info { display: flex; flex-direction: column; }
+        .title { font-size: 18px; font-weight: 500; color: #fff; }
+        .category { font-size: 11px; color: #38bdf8; font-weight: 700; text-transform: uppercase; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -82,30 +64,42 @@
 
     <div class="grid">
         <div class="card" onclick="launch('../sys_lib/tool_01/index.html')">
-            <div class="card-tag"><span class="status-dot"></span>Simulation</div>
-            <div class="card-title">PolyTrack</div>
+            <img src="assets/tool_01.png" class="game-icon" alt="icon">
+            <div class="info">
+                <div class="category">Simulator</div>
+                <div class="title">PolyTrack</div>
+            </div>
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_02/index.html')">
-            <div class="card-tag"><span class="status-dot"></span>Arcade</div>
-            <div class="card-title">Slope</div>
+            <img src="assets/tool_02.png" class="game-icon" alt="icon">
+            <div class="info">
+                <div class="category">Arcade</div>
+                <div class="title">Slope</div>
+            </div>
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_03/index.html')">
-            <div class="card-tag"><span class="status-dot"></span>Sports</div>
-            <div class="card-title">Retro Bowl</div>
+            <img src="assets/tool_03.png" class="game-icon" alt="icon">
+            <div class="info">
+                <div class="category">Sports</div>
+                <div class="title">Retro Bowl</div>
+            </div>
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_04/index.html')">
-            <div class="card-tag"><span class="status-dot"></span>Social</div>
-            <div class="card-title">BitLife</div>
+            <img src="assets/tool_04.png" class="game-icon" alt="icon">
+            <div class="info">
+                <div class="category">Social</div>
+                <div class="title">BitLife</div>
+            </div>
         </div>
     </div>
 
     <script>
         function launch(url) {
-            const absoluteURL = new URL(url, window.location.href).href;
-            window.parent.postMessage({ type: "OPEN_GAME", url: absoluteURL }, "*");
+            const absURL = new URL(url, window.location.href).href;
+            window.parent.postMessage({ type: "OPEN_GAME", url: absURL }, "*");
         }
     </script>
 </body>
