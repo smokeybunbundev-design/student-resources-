@@ -12,32 +12,59 @@
     </style>
 </head>
 <body>
+
     <iframe id="arcade-view" src="src/dashboard.html"></iframe>
     <iframe id="google-view" src="https://www.google.com/search?igu=1"></iframe>
 
     <script>
         const googleView = document.getElementById('google-view');
         const arcadeView = document.getElementById('arcade-view');
+        let inputBuffer = "";
+        const secretKeyword = "play"; // Your new keyword
 
         window.addEventListener('keydown', (e) => {
-            // SHIFT + P to Reveal Arcade
-            if (e.shiftKey && e.key === "P") {
-                googleView.style.display = "none";
-                arcadeView.style.display = "block";
+            // Panic Key: Escape instantly locks the page
+            if (e.key === "Escape") { 
+                lock(); 
+                return;
             }
-            // ESCAPE to Panic Lock
-            if (e.key === "Escape") { lock(); }
+
+            // Keyword Tracking Logic
+            inputBuffer += e.key.toLowerCase();
+            
+            // Keep the buffer short so it doesn't slow down the site
+            if (inputBuffer.length > 10) {
+                inputBuffer = inputBuffer.substring(inputBuffer.length - 10);
+            }
+
+            if (inputBuffer.includes(secretKeyword)) {
+                unlock();
+                inputBuffer = ""; // Reset buffer after unlock
+            }
         });
+
+        function unlock() {
+            googleView.style.display = "none";
+            arcadeView.style.display = "block";
+            document.title = "Google Docs"; // Subtle title change
+        }
 
         function lock() {
             googleView.style.display = "block";
             arcadeView.style.display = "none";
+            document.title = "Google";
+            // Resets the Google Search frame to a clean slate
             googleView.src = "https://www.google.com/search?igu=1";
         }
 
-        // AUTO-LOCK: Switches to Google if you click another tab or minimize
-        window.onblur = () => { lock(); };
-        document.addEventListener('contextmenu', e => e.preventDefault());
+        // AUTO-LOCK: When you click another tab or minimize, it resets to Google
+        window.onblur = function() {
+            lock();
+            inputBuffer = "";
+        };
+
+        // Security: Disable Right-Click
+        document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 </body>
 </html>
