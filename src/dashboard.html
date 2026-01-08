@@ -2,110 +2,162 @@
 <html lang="en">
 <head>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; cursor: crosshair; }
         
         body { 
             margin: 0;
-            padding: 60px 20px;
+            padding: 40px 20px;
             min-height: 100vh;
-            color: #e8eaed; 
-            font-family: 'Segoe UI', system-ui, sans-serif; 
+            color: #fff; 
+            font-family: 'Orbitron', 'Segoe UI', sans-serif; /* Orbitron gives a sci-fi look */
             display: flex; 
             flex-direction: column; 
             align-items: center;
-            /* The Moving Atmosphere */
-            background: linear-gradient(270deg, #0b0e14, #1a1c23, #0b0e14);
-            background-size: 400% 400%;
-            animation: atmosphere 15s ease infinite;
+            background: #050505;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        @keyframes atmosphere {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Animated Neon Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: gridMove 10s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            from { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            to { transform: perspective(500px) rotateX(60deg) translateY(50px); }
         }
 
         h1 { 
-            font-weight: 200; letter-spacing: 5px; color: #38bdf8; 
-            margin-bottom: 50px; text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            font-size: 3rem;
+            font-weight: 900; 
+            letter-spacing: 10px; 
+            color: #fff;
+            text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8, 0 0 40px #38bdf8;
+            margin-bottom: 60px;
+            text-transform: uppercase;
         }
 
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
-            gap: 30px; width: 100%; max-width: 1100px; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 40px; 
+            width: 100%; 
+            max-width: 1200px; 
         }
 
         .card { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; 
-            padding: 18px; 
+            position: relative;
+            background: rgba(10, 10, 10, 0.8); 
+            border: 2px solid #1a1a1a;
+            border-radius: 24px; 
+            padding: 25px; 
             cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 18px;
+            text-align: center;
+            box-shadow: 0 0 0 rgba(56, 189, 248, 0);
+        }
+
+        /* Large Gamer Icons */
+        .game-icon {
+            width: 120px; /* Larger icons */
+            height: 120px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid #333;
+            transition: 0.3s;
         }
 
         .card:hover { 
-            transform: scale(1.05) translateY(-5px);
-            background: rgba(56, 189, 248, 0.1);
+            transform: scale(1.1) translateY(-10px);
             border-color: #38bdf8;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            background: #000;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
         }
 
-        .game-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            object-fit: cover;
-            background: #121212;
-            border: 1px solid rgba(255,255,255,0.1);
+        .card:hover .game-icon {
+            border-color: #38bdf8;
+            transform: rotate(3deg);
+            box-shadow: 0 0 15px #38bdf8;
         }
 
-        .info { display: flex; flex-direction: column; }
-        .title { font-size: 18px; font-weight: 500; color: #fff; }
-        .category { font-size: 11px; color: #38bdf8; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
+        .title { 
+            font-size: 22px; 
+            font-weight: 800; 
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category { 
+            font-size: 12px; 
+            color: #38bdf8; 
+            font-weight: 700; 
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        /* Hover Pulse Effect */
+        .card::after {
+            content: "LAUNCH";
+            position: absolute;
+            bottom: -15px;
+            background: #38bdf8;
+            color: #000;
+            padding: 5px 15px;
+            font-size: 10px;
+            font-weight: 900;
+            border-radius: 10px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+            bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>System Resources</h1>
+    <h1>Ready Player One</h1>
 
     <div class="grid">
         <div class="card" onclick="launch('../sys_lib/tool_01/index.html')">
-            <img src="assets/tool_01.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
-            <div class="info">
-                <div class="category">Simulator</div>
-                <div class="title">PolyTrack</div>
-            </div>
+            <img src="assets/tool_01.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/controller.png'">
+            <div class="title">PolyTrack</div>
+            <div class="category">Racing / Simulator</div>
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_02/index.html')">
-            <img src="assets/tool_02.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
-            <div class="info">
-                <div class="category">Arcade</div>
-                <div class="title">Slope</div>
-            </div>
+            <img src="assets/tool_02.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/gravity.png'">
+            <div class="title">Slope</div>
+            <div class="category">Arcade / Physics</div>
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_03/index.html')">
-            <img src="assets/tool_03.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
-            <div class="info">
-                <div class="category">Sports</div>
-                <div class="title">Retro Bowl</div>
-            </div>
+            <img src="assets/tool_03.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/american-football.png'">
+            <div class="title">Retro Bowl</div>
+            <div class="category">Sports / Strategy</div>
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_04/index.html')">
-            <img src="assets/tool_04.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
-            <div class="info">
-                <div class="category">Social</div>
-                <div class="title">BitLife</div>
-            </div>
+            <img src="assets/tool_04.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/human-head.png'">
+            <div class="title">BitLife</div>
+            <div class="category">Social / RPG</div>
         </div>
     </div>
 
