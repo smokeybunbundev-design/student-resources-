@@ -3,10 +3,28 @@
 <head>
     <title>Google</title>
     <link rel="icon" href="https://www.google.com/favicon.ico">
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-        #mask { width: 100%; height: 100%; background: url('mask.png') no-repeat center; background-size: cover; }
-    </style>
+        <style>
+            body, html { 
+                margin: 0; 
+                padding: 0; 
+                width: 100%; 
+                height: 100%; 
+                overflow: hidden; 
+                background-color: white; 
+            }
+            #mask { 
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw; 
+                height: 100vh; 
+                /* This line ensures the image covers the whole screen */
+                background: url('mask.png') no-repeat center center; 
+                background-size: cover; 
+                z-index: 9999;
+                pointer-events: none;
+            }
+        </style>
 </head>
 <body>
     <div id="mask"></div>
@@ -25,7 +43,8 @@
 
                 const frame = ghost.document.createElement('iframe');
                 // Path points to our hidden 'src' folder
-                frame.src = window.location.origin + "/src/dashboard.html";
+                //i did something
+                frame.src = "src/dashboard.html";
                 frame.style = "position:fixed; top:0; left:0; width:100%; height:100%; border:none;";
                 
                 ghost.document.body.appendChild(frame);
