@@ -2,74 +2,30 @@
 <html>
 <head>
     <style>
-        body { 
-            background: #0b0e14; 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            padding: 40px; 
-            margin: 0;
-        }
-        h1 { font-weight: 200; color: #38bdf8; letter-spacing: 3px; margin-bottom: 40px; }
-        
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-            gap: 25px; 
-        }
-
-        .card { 
-            background: #1c212c; 
-            border: 1px solid #2d333f; 
-            border-radius: 16px; 
-            padding: 20px; 
-            text-align: center; 
-            transition: all 0.3s ease; 
-            cursor: pointer; 
-        }
-
-        .card:hover { 
-            transform: translateY(-8px); 
-            border-color: #38bdf8; 
-            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2); 
-        }
-
-        .card img { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 12px; 
-            margin-bottom: 15px; 
-        }
-
-        .card span { 
-            display: block; 
-            font-size: 14px; 
-            font-weight: 500; 
-            color: #cbd5e1;
-        }
+        body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
+        .card { background: #1c212c; border-radius: 12px; padding: 15px; border: 1px solid #2d333f; cursor: pointer; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        h1 { color: #38bdf8; font-weight: 200; }
     </style>
 </head>
 <body>
-    <h1>CENTRAL_HUB_v6</h1>
+    <h1>SYSTEM_RESOURCES</h1>
     <div class="grid">
-        <div class="card" onclick="location.href='../sys_lib/tool_01/index.html'">
-            <img src="https://img.icons8.com/fluency/96/race-car.png">
-            <span>PolyTrack</span>
+        <div class="card" onclick="launch('../sys_lib/tool_01/index.html')">PolyTrack</div>
+        <div class="card" onclick="launch('../sys_lib/tool_02/index.html')">Slope</div>
+        <div class="card" onclick="launch('../sys_lib/tool_03/index.html')">Retro Bowl</div>
         </div>
 
-        <div class="card" onclick="location.href='../sys_lib/tool_02/index.html'">
-            <img src="https://img.icons8.com/fluency/96/sphere.png">
-            <span>Slope</span>
-        </div>
-
-        <div class="card" onclick="location.href='../sys_lib/tool_03/index.html'">
-            <img src="https://img.icons8.com/fluency/96/football.png">
-            <span>Retro Bowl</span>
-        </div>
-
-        <div class="card" onclick="location.href='../sys_lib/tool_04/index.html'">
-            <img src="https://img.icons8.com/fluency/96/life-cycle.png">
-            <span>BitLife</span>
-        </div>
-    </div>
+    <script>
+        function launch(url) {
+            const ghost = window.open('about:blank', '_blank');
+            const frame = ghost.document.createElement('iframe');
+            frame.src = window.location.origin + window.location.pathname.replace('src/dashboard.html', '') + url.replace('../', '');
+            frame.style = "position:fixed; top:0; left:0; width:100%; height:100%; border:none;";
+            ghost.document.body.appendChild(frame);
+            ghost.document.body.style.margin = "0";
+        }
+    </script>
 </body>
 </html>
