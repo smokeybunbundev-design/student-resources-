@@ -30,18 +30,46 @@
 
     <script>
         function launch(url) {
-            // Opens game in about:blank for maximum stealth
+            // 1. Create a full path so the browser doesn't get confused
+            // This turns '../sys_lib/tool_01/index.html' into a real web address
+            const fullURL = new URL(url, window.location.href).href;
+        
+            // 2. Open the ghost tab
             const ghost = window.open('about:blank', '_blank');
-            const frame = ghost.document.createElement('iframe');
-            
-            // Build the path relative to the root
-            const rootPath = window.location.origin + window.location.pathname.replace('src/dashboard.html', '');
-            frame.src = rootPath + url.replace('../', '');
-            
-            frame.style = "position:fixed; top:0; left:0; width:100%; height:100%; border:none;";
-            ghost.document.body.appendChild(frame);
-            ghost.document.body.style.margin = "0";
+        
+            if (ghost) {
+                // 3. Prevent the ghost tab from having a "referrer" (extra stealth)
+                ghost.opener = null;
+        
+                // 4. Inject the game iframe into the ghost tab
+                const doc = ghost.document;
+                doc.title = "Google Docs"; // Tab cloaking
+                
+                // Add the Favicon
+                const link = doc.createElement('link');
+                link.rel = 'icon';
+                link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
+                doc.head.appendChild(link);
+        
+                // Create the game container
+                const frame = doc.createElement('iframe');
+                frame.src = fullURL;
+                frame.style.position = "fixed";
+                frame.style.top = "0";
+                frame.style.left = "0";
+                frame.style.width = "100vw";
+                frame.style.height = "100vh";
+                frame.style.border = "none";
+                
+                doc.body.appendChild(frame);
+                doc.body.style.margin = "0";
+                doc.body.style.overflow = "hidden";
+            } else {
+                // Fallback: If the popup was blocked, alert the user
+                alert("Pop-up blocked! Please click the 'Pop-up Blocked' icon in your URL bar and allow them for this site.");
+            }
         }
+                }
     </script>
 </body>
 </html>
