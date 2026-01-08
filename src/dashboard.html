@@ -3,12 +3,26 @@
 <head>
     <style>
         * { box-sizing: border-box; }
+        
         body { 
-            background: transparent; 
+            margin: 0;
+            padding: 60px 20px;
+            min-height: 100vh;
             color: #e8eaed; 
             font-family: 'Segoe UI', system-ui, sans-serif; 
-            margin: 0; padding: 60px 20px; 
-            display: flex; flex-direction: column; align-items: center;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            /* The Moving Atmosphere */
+            background: linear-gradient(270deg, #0b0e14, #1a1c23, #0b0e14);
+            background-size: 400% 400%;
+            animation: atmosphere 15s ease infinite;
+        }
+
+        @keyframes atmosphere {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         h1 { 
@@ -24,23 +38,23 @@
         }
 
         .card { 
-            background: rgba(30, 32, 35, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px; 
             padding: 18px; 
             cursor: pointer; 
-            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            backdrop-filter: blur(15px);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             gap: 18px;
         }
 
         .card:hover { 
-            transform: scale(1.05);
-            background: rgba(45, 48, 53, 0.8);
+            transform: scale(1.05) translateY(-5px);
+            background: rgba(56, 189, 248, 0.1);
             border-color: #38bdf8;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
         .game-icon {
@@ -49,13 +63,12 @@
             border-radius: 12px;
             object-fit: cover;
             background: #121212;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .info { display: flex; flex-direction: column; }
         .title { font-size: 18px; font-weight: 500; color: #fff; }
-        .category { font-size: 11px; color: #38bdf8; font-weight: 700; text-transform: uppercase; opacity: 0.8; }
+        .category { font-size: 11px; color: #38bdf8; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -64,7 +77,7 @@
 
     <div class="grid">
         <div class="card" onclick="launch('../sys_lib/tool_01/index.html')">
-            <img src="assets/tool_01.png" class="game-icon" alt="icon">
+            <img src="assets/tool_01.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
             <div class="info">
                 <div class="category">Simulator</div>
                 <div class="title">PolyTrack</div>
@@ -72,7 +85,7 @@
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_02/index.html')">
-            <img src="assets/tool_02.png" class="game-icon" alt="icon">
+            <img src="assets/tool_02.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
             <div class="info">
                 <div class="category">Arcade</div>
                 <div class="title">Slope</div>
@@ -80,7 +93,7 @@
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_03/index.html')">
-            <img src="assets/tool_03.png" class="game-icon" alt="icon">
+            <img src="assets/tool_03.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
             <div class="info">
                 <div class="category">Sports</div>
                 <div class="title">Retro Bowl</div>
@@ -88,7 +101,7 @@
         </div>
 
         <div class="card" onclick="launch('../sys_lib/tool_04/index.html')">
-            <img src="assets/tool_04.png" class="game-icon" alt="icon">
+            <img src="assets/tool_04.png" class="game-icon" onerror="this.src='https://img.icons8.com/color/96/controller.png'">
             <div class="info">
                 <div class="category">Social</div>
                 <div class="title">BitLife</div>
