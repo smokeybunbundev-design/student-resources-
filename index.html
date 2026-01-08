@@ -6,83 +6,83 @@
     <link rel="icon" href="https://www.google.com/favicon.ico">
     <style>
         :root {
-            --bg: #fff; --txt: #202124; --brd: #dfe1e5; --ftr: #f2f2f2; --ftr-txt: #70757a;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root { --bg: #202124; --txt: #e8eaed; --brd: #5f6368; --ftr: #171717; --ftr-txt: #9aa0a6; }
+            --bg: #202124;
+            --txt: #e8eaed;
+            --search-bg: #202124;
+            --search-border: #5f6368;
+            --btn-bg: #303134;
+            --btn-text: #e8eaed;
+            --footer-bg: #171717;
+            --footer-txt: #9aa0a6;
         }
 
         body { font-family: arial, sans-serif; margin: 0; background: var(--bg); color: var(--txt); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        /* Nav Bar */
+        /* Top Navigation */
         .nav { display: flex; justify-content: flex-end; align-items: center; padding: 6px 15px; height: 48px; }
-        .nav a { text-decoration: none; color: var(--txt); font-size: 13px; margin: 0 10px; padding-top: 5px; }
+        .nav a { text-decoration: none; color: var(--txt); font-size: 13px; margin: 0 10px; }
         .nav a:hover { text-decoration: underline; }
-        .nav-apps { padding: 8px; border-radius: 50%; cursor: pointer; display: flex; }
-        .nav-apps:hover { background: rgba(60,64,67,0.08); }
+        .nav-apps { padding: 8px; border-radius: 50%; cursor: pointer; display: flex; color: var(--txt); }
 
-        /* Main Search Area */
+        /* Main Area */
         .main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: -80px; }
-        .logo { width: 272px; margin-bottom: 25px; }
-        
-        .search-box { width: 100%; max-width: 584px; position: relative; margin-top: 6px; }
-        .search-bar { 
-            width: 100%; height: 46px; border: 1px solid var(--brd); border-radius: 24px; 
-            background: var(--bg); color: var(--txt); padding: 0 90px 0 45px; font-size: 16px; 
-            outline: none; box-sizing: border-box; transition: box-shadow 0.1s;
-        }
-        .search-bar:focus, .search-bar:hover { box-shadow: 0 1px 6px rgba(32,33,36,0.28); border-color: transparent; }
+        .logo { width: 272px; margin-bottom: 25px; filter: drop-shadow(0 0 1px #fff); }
 
-        /* Small Icons inside Search Bar */
-        .glass-icon { position: absolute; left: 14px; top: 12px; width: 20px; height: 20px; fill: #9aa0a6; }
-        .right-icons { position: absolute; right: 14px; top: 8px; display: flex; align-items: center; }
-        .mic-icon, .cam-icon { width: 24px; height: 24px; cursor: pointer; margin: 0 8px; }
+        .search-box { width: 100%; max-width: 584px; position: relative; }
+        .search-bar { 
+            width: 100%; height: 46px; border: 1px solid var(--search-border); border-radius: 24px; 
+            background: var(--search-bg); color: var(--txt); padding: 0 90px 0 45px; 
+            font-size: 16px; outline: none; box-sizing: border-box; 
+        }
+        .search-bar:focus { background: #303134; box-shadow: 0 1px 6px rgba(0,0,0,0.4); border-color: transparent; }
+
+        /* Icon Positioning */
+        .glass-icon { position: absolute; left: 14px; top: 13px; width: 20px; height: 20px; fill: #9aa0a6; }
+        .right-icons { position: absolute; right: 16px; top: 11px; display: flex; gap: 12px; }
+        .mic, .lens { width: 24px; height: 24px; cursor: pointer; }
 
         .btns { margin-top: 28px; }
         .btn { 
-            background: var(--ftr); border: 1px solid var(--ftr); color: #3c4043; 
+            background: var(--btn-bg); border: 1px solid var(--btn-bg); color: var(--btn-text); 
             padding: 0 16px; line-height: 36px; min-width: 54px; text-align: center; 
             cursor: pointer; border-radius: 4px; font-size: 14px; margin: 6px; display: inline-block;
         }
-        @media (prefers-color-scheme: dark) { .btn { color: var(--txt); } }
-        .btn:hover { border: 1px solid #dadce0; box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
+        .btn:hover { border: 1px solid #5f6368; color: #fff; }
 
-        /* Footer Layout */
-        .footer { background: var(--ftr); color: var(--ftr-txt); width: 100%; position: absolute; bottom: 0; }
-        .footer-t { padding: 15px 30px; border-bottom: 1px solid var(--brd); font-size: 15px; }
-        .footer-b { display: flex; justify-content: space-between; padding: 15px 30px; flex-wrap: wrap; }
-        .footer-b a { color: var(--ftr-txt); text-decoration: none; margin-right: 25px; font-size: 14px; }
-        .carbon { display: flex; align-items: center; font-size: 14px; }
-        .leaf { color: #34a853; margin-right: 5px; }
+        /* Footer */
+        .footer { background: var(--footer-bg); color: var(--footer-txt); width: 100%; position: absolute; bottom: 0; }
+        .footer-t { padding: 15px 30px; border-bottom: 1px solid #3c4043; font-size: 15px; }
+        .footer-b { display: flex; justify-content: space-between; padding: 15px 30px; font-size: 14px; }
+        .footer-b a { color: var(--footer-txt); text-decoration: none; margin-right: 25px; }
+        .carbon { display: flex; align-items: center; gap: 5px; }
 
-        #arcade-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #0b0e14; z-index: 9999; }
+        #arcade-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #000; z-index: 10000; }
     </style>
 </head>
 <body>
 
 <div class="nav">
-    <a href="#">Gmail</a>
-    <a href="#">Images</a>
+    <a href="#">Gmail</a><a href="#">Images</a>
     <div class="nav-apps">
-        <svg focusable="false" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"></path></svg>
+        <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"></path></svg>
     </div>
-    <div style="width:32px; height:32px; background:#4285f4; border-radius:50%; margin-left:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:14px;">G</div>
+    <div style="width:32px; height:32px; background:#4285f4; border-radius:50%; margin-left:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; font-weight:bold;">G</div>
 </div>
 
 <div class="main">
-    <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png">
+    <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_272x92dp.png">
     
     <div class="search-box">
-        <svg class="glass-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
-        <input type="text" id="search-bar" class="search-bar" autocomplete="off">
+        <svg class="glass-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+        <input type="text" id="search-input" class="search-bar" autocomplete="off">
         <div class="right-icons">
-            <img class="mic-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Google_Mic_Logo.svg">
-            <img class="cam-icon" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Google_Lens_2023.svg">
+            <svg class="mic" viewBox="0 0 24 24"><path fill="#4285f4" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path fill="#34a853" d="M11 18.92V22h2v-3.08c3.39-.49 6-3.38 6-6.92h-2c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.54 2.61 6.43 6 6.92z"/><path fill="#fabc05" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path fill="#ea4335" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/></svg>
+            <svg class="lens" viewBox="0 0 24 24"><path fill="#4285f4" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"/><circle cx="12" cy="12" r="3" fill="#34a853"/></svg>
         </div>
     </div>
 
     <div class="btns">
-        <div class="btn" onclick="checkSearch()">Google Search</div>
+        <div class="btn" onclick="checkUnlock()">Google Search</div>
         <div class="btn">I'm Feeling Lucky</div>
     </div>
 </div>
@@ -91,21 +91,24 @@
     <div class="footer-t">United States</div>
     <div class="footer-b">
         <div><a href="#">About</a><a href="#">Advertising</a><a href="#">Business</a><a href="#">How Search works</a></div>
-        <div class="carbon"><span class="leaf">🍃</span> Carbon neutral since 2007</div>
+        <div class="carbon"><span style="color:#34a853">🍃</span> Carbon neutral since 2007</div>
         <div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a></div>
     </div>
 </div>
 
-<div id="arcade-overlay"><iframe id="arcade-frame" src="src/dashboard.html" style="width:100%;height:100%;border:none;"></iframe></div>
+<div id="arcade-overlay">
+    <iframe id="arcade-frame" src="src/dashboard.html" style="width:100%;height:100%;border:none;"></iframe>
+</div>
 
 <script>
-    const searchBar = document.getElementById('search-bar');
+    const input = document.getElementById('search-input');
     const overlay = document.getElementById('arcade-overlay');
 
-    function checkSearch() {
-        const val = searchBar.value.toLowerCase().trim();
+    function checkUnlock() {
+        const val = input.value.toLowerCase().trim();
         if (val === "play") {
-            if (navigator.platform.toUpperCase().indexOf('MAC') !== -1) {
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') !== -1;
+            if (isMac) {
                 window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
                 return;
             }
@@ -116,21 +119,18 @@
         }
     }
 
-    searchBar.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkSearch(); });
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkUnlock(); });
 
     window.addEventListener('keydown', (e) => {
         if (e.key === "Escape") {
             overlay.style.display = "none";
             document.title = "Google";
-            searchBar.value = "";
+            input.value = "";
+            document.getElementById('arcade-frame').contentWindow.location.reload();
         }
     });
 
-    window.onblur = () => {
-        overlay.style.display = "none";
-        document.title = "Google";
-    };
-
+    // Handle game launching
     window.addEventListener("message", (e) => {
         if (e.data.type === "OPEN_GAME") {
             const win = window.open('about:blank', '_blank');
