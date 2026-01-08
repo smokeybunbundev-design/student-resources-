@@ -7,68 +7,54 @@
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; }
         iframe { width: 100vw; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
-        
-        /* This layer sits on top of Google to catch your typing */
-        #focus-catcher {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10; background: transparent;
-        }
-
+        #smart-listener { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: transparent; pointer-events: none; }
         #arcade-view { z-index: 1; display: none; }
         #google-view { z-index: 2; display: block; }
     </style>
 </head>
 <body>
-
-    <div id="focus-catcher"></div>
-
+    <div id="smart-listener" tabindex="0"></div>
     <iframe id="arcade-view" src="src/dashboard.html"></iframe>
     <iframe id="google-view" src="https://www.google.com/search?igu=1"></iframe>
 
     <script>
         const googleView = document.getElementById('google-view');
         const arcadeView = document.getElementById('arcade-view');
-        const catcher = document.getElementById('focus-catcher');
+        const listener = document.getElementById('smart-listener');
         let inputBuffer = "";
         const secretKeyword = "play";
 
-        // Listen for typing on the whole window
-        window.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") { 
-                lock(); 
-                return;
-            }
+        // Listen for "Launch" signals from the Dashboard Iframe
+        window.addEventListener("message", (event) => {
+            if (event.data.type === "LAUNCH_GAME") {
+                const ghost = window.open('about:blank', '_blank');
+                const doc = ghost.document;
+                doc.title = "Google Docs";
+                const icon = doc.createElement('link');
+                icon.rel = 'icon'; icon.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
+                doc.head.appendChild(icon);
 
-            inputBuffer += e.key.toLowerCase();
-            if (inputBuffer.length > 10) inputBuffer = inputBuffer.substring(inputBuffer.length - 10);
-
-            if (inputBuffer.includes(secretKeyword)) {
-                unlock();
-                inputBuffer = ""; 
+                const frame = doc.createElement('iframe');
+                frame.src = event.data.url;
+                frame.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; border:none;";
+                doc.body.appendChild(frame);
+                doc.body.style.margin = "0";
             }
         });
 
-        function unlock() {
-            googleView.style.display = "none";
-            arcadeView.style.display = "block";
-            catcher.style.display = "none"; // Remove overlay so you can click games
-            document.title = "Google Docs";
-        }
+        function maintainFocus() { if (googleView.style.display !== "none") listener.focus(); }
+        window.addEventListener('mousedown', () => setTimeout(maintainFocus, 1000));
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") { lock(); return; }
+            inputBuffer += e.key.toLowerCase();
+            if (inputBuffer.length > 10) inputBuffer = inputBuffer.substring(inputBuffer.length - 10);
+            if (inputBuffer.includes(secretKeyword)) { unlock(); inputBuffer = ""; }
+        });
 
-        function lock() {
-            googleView.style.display = "block";
-            arcadeView.style.display = "none";
-            catcher.style.display = "block"; // Re-add overlay to catch 'play' again
-            document.title = "Google";
-            googleView.src = "https://www.google.com/search?igu=1";
-        }
-
-        window.onblur = () => {
-            lock();
-            inputBuffer = "";
-        };
-
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        function unlock() { googleView.style.display = "none"; arcadeView.style.display = "block"; document.title = "Google Docs"; }
+        function lock() { googleView.style.display = "block"; arcadeView.style.display = "none"; document.title = "Google"; maintainFocus(); }
+        window.onblur = () => { lock(); };
+        window.onload = () => { maintainFocus(); };
     </script>
 </body>
 </html>
