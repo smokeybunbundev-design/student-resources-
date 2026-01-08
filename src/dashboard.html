@@ -2,74 +2,31 @@
 <html>
 <head>
     <style>
-        body { background: #0b0e14; color: white; font-family: 'Segoe UI', sans-serif; padding: 40px; margin: 0; text-align: center; }
-        h1 { font-weight: 200; color: #38bdf8; letter-spacing: 2px; margin-bottom: 30px; }
+        body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; margin: 0; text-align: center; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-        .card { 
-            background: #1c212c; border-radius: 12px; padding: 20px; 
-            border: 1px solid #2d333f; cursor: pointer; transition: 0.3s;
-        }
+        .card { background: #1c212c; border-radius: 12px; padding: 20px; border: 1px solid #2d333f; cursor: pointer; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); border-color: #38bdf8; box-shadow: 0 5px 15px rgba(56,189,248,0.2); }
-        .card span { display: block; margin-top: 10px; font-size: 14px; }
     </style>
 </head>
 <body>
     <h1>SYSTEM_RESOURCES</h1>
     <div class="grid">
-        <div class="card" onclick="launch('../sys_lib/tool_01/index.html')"><span>PolyTrack</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_02/index.html')"><span>Slope</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_03/index.html')"><span>Retro Bowl</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_04/index.html')"><span>BitLife</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_05/index.html')"><span>Tetris</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_06/index.html')"><span>Cookie Clicker</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_07/index.html')"><span>1v1.LOL</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_08/index.html')"><span>Tunnel Rush</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_09/index.html')"><span>Drift Hunters</span></div>
-        <div class="card" onclick="launch('../sys_lib/tool_10/index.html')"><span>Run 3</span></div>
-    </div>
+        <div class="card" onclick="sendToParent('../sys_lib/tool_01/index.html')">PolyTrack</div>
+        <div class="card" onclick="sendToParent('../sys_lib/tool_02/index.html')">Slope</div>
+        <div class="card" onclick="sendToParent('../sys_lib/tool_03/index.html')">Retro Bowl</div>
+        </div>
 
     <script>
-        function launch(url) {
-            // 1. Create a full path so the browser doesn't get confused
-            // This turns '../sys_lib/tool_01/index.html' into a real web address
+        function sendToParent(url) {
+            // Convert relative path to absolute path
             const fullURL = new URL(url, window.location.href).href;
-        
-            // 2. Open the ghost tab
-            const ghost = window.open('about:blank', '_blank');
-        
-            if (ghost) {
-                // 3. Prevent the ghost tab from having a "referrer" (extra stealth)
-                ghost.opener = null;
-        
-                // 4. Inject the game iframe into the ghost tab
-                const doc = ghost.document;
-                doc.title = "Google Docs"; // Tab cloaking
-                
-                // Add the Favicon
-                const link = doc.createElement('link');
-                link.rel = 'icon';
-                link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
-                doc.head.appendChild(link);
-        
-                // Create the game container
-                const frame = doc.createElement('iframe');
-                frame.src = fullURL;
-                frame.style.position = "fixed";
-                frame.style.top = "0";
-                frame.style.left = "0";
-                frame.style.width = "100vw";
-                frame.style.height = "100vh";
-                frame.style.border = "none";
-                
-                doc.body.appendChild(frame);
-                doc.body.style.margin = "0";
-                doc.body.style.overflow = "hidden";
-            } else {
-                // Fallback: If the popup was blocked, alert the user
-                alert("Pop-up blocked! Please click the 'Pop-up Blocked' icon in your URL bar and allow them for this site.");
-            }
+            
+            // Send the URL to the index.html page
+            window.parent.postMessage({
+                type: "LAUNCH_GAME",
+                url: fullURL
+            }, "*");
         }
-                }
     </script>
 </body>
 </html>
