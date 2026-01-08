@@ -19,8 +19,14 @@
     </div>
     <script>
         function sendToParent(url) {
-            const fullURL = new URL(url, window.location.href).href;
-            window.parent.postMessage({ type: "LAUNCH_GAME", url: fullURL }, "*");
+            // This part is crucial: it turns the relative path into a full address
+            // e.g., ../sys_lib/tool_01/index.html -> https://site.neocities.org/sys_lib/tool_01/index.html
+            const absoluteURL = new URL(url, window.location.href).href;
+        
+            window.parent.postMessage({
+                type: "LAUNCH_GAME",
+                url: absoluteURL
+            }, "*");
         }
     </script>
 </body>
