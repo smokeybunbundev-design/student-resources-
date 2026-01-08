@@ -143,17 +143,34 @@
     };
 
     // Receiver for launching games in Ghost Tabs
-    window.addEventListener("message", (e) => {
-        if (e.data.type === "LAUNCH_GAME") {
-            const ghost = window.open('about:blank', '_blank');
-            const doc = ghost.document;
-            doc.title = "Google Docs";
-            const frame = doc.createElement('iframe');
-            frame.src = e.data.url;
-            frame.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; border:none;";
-            doc.body.appendChild(frame);
-            doc.body.style.margin = "0";
-        }
+        window.addEventListener("message", (event) => {
+            if (event.data.type === "LAUNCH_GAME") {
+                // Create a Ghost Tab
+                const ghost = window.open('about:blank', '_blank');
+                
+                if (!ghost) {
+                    alert("Please allow pop-ups to play games!");
+                    return;
+                }
+        
+                // Setup the Ghost Tab's metadata
+                const doc = ghost.document;
+                doc.title = "Google Docs";
+                const icon = doc.createElement('link');
+                icon.rel = 'icon'; 
+                icon.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
+                doc.head.appendChild(icon);
+        
+                // Inject the game using a specific "Write" command
+                // This is the most compatible way to prevent the main page from refreshing
+                doc.write(`
+                    <body style="margin:0;overflow:hidden">
+                        <iframe src="${event.data.url}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;"></iframe>
+                    </body>
+                `);
+                doc.close(); 
+            }
+        });
     });
 </script>
 </body>
