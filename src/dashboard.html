@@ -1,25 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <style>
-        body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; text-align: center; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-        .card { background: #1c212c; border-radius: 12px; padding: 20px; border: 1px solid #2d333f; cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: scale(1.05); border-color: #38bdf8; }
+        * { box-sizing: border-box; }
+        body { 
+            background: #0b0e14; 
+            color: #e8eaed; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 40px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        h1 { 
+            font-weight: 300; 
+            letter-spacing: 4px; 
+            color: #38bdf8; 
+            text-transform: uppercase; 
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 25px; 
+            width: 100%; 
+            max-width: 1000px; 
+        }
+
+        .card { 
+            position: relative;
+            background: rgba(28, 33, 44, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; 
+            padding: 30px 20px; 
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Hover Glow Effect */
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: #38bdf8;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+            background: rgba(35, 41, 55, 0.9);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .card:hover::before { left: 100%; }
+
+        .card-title { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+        .card-tag { font-size: 12px; color: #70757a; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Smooth launch button animation */
+        .status-dot {
+            width: 8px; height: 8px; 
+            background: #34a853; 
+            border-radius: 50%; 
+            display: inline-block; 
+            margin-right: 8px;
+            box-shadow: 0 0 8px #34a853;
+        }
     </style>
 </head>
 <body>
-    <h1>CENTRAL_HUB</h1>
+
+    <h1>System Resources</h1>
+
     <div class="grid">
-        <div class="card" onclick="launchGame('../sys_lib/tool_01/index.html')">PolyTrack</div>
-        <div class="card" onclick="launchGame('../sys_lib/tool_02/index.html')">Slope</div>
+        <div class="card" onclick="launch('../sys_lib/tool_01/index.html')">
+            <div class="card-tag"><span class="status-dot"></span>Simulation</div>
+            <div class="card-title">PolyTrack</div>
         </div>
 
+        <div class="card" onclick="launch('../sys_lib/tool_02/index.html')">
+            <div class="card-tag"><span class="status-dot"></span>Arcade</div>
+            <div class="card-title">Slope</div>
+        </div>
+
+        <div class="card" onclick="launch('../sys_lib/tool_03/index.html')">
+            <div class="card-tag"><span class="status-dot"></span>Sports</div>
+            <div class="card-title">Retro Bowl</div>
+        </div>
+
+        <div class="card" onclick="launch('../sys_lib/tool_04/index.html')">
+            <div class="card-tag"><span class="status-dot"></span>Social</div>
+            <div class="card-title">BitLife</div>
+        </div>
+    </div>
+
     <script>
-        function launchGame(path) {
-            const fullUrl = new URL(path, window.location.href).href;
-            // Send signal to index.html to open the tab
-            window.parent.postMessage({ type: "OPEN_GAME", url: fullUrl }, "*");
+        function launch(url) {
+            const absoluteURL = new URL(url, window.location.href).href;
+            window.parent.postMessage({ type: "OPEN_GAME", url: absoluteURL }, "*");
         }
     </script>
 </body>
