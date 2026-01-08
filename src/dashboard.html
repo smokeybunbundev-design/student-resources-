@@ -2,31 +2,24 @@
 <html>
 <head>
     <style>
-        body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; margin: 0; text-align: center; }
+        body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; text-align: center; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
         .card { background: #1c212c; border-radius: 12px; padding: 20px; border: 1px solid #2d333f; cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: #38bdf8; }
-        h1 { color: #38bdf8; font-weight: 200; letter-spacing: 2px; }
+        .card:hover { transform: scale(1.05); border-color: #38bdf8; }
     </style>
 </head>
 <body>
-    <h1>SYSTEM_RESOURCES</h1>
+    <h1>CENTRAL_HUB</h1>
     <div class="grid">
-        <div class="card" onclick="sendToParent('../sys_lib/tool_01/index.html')">PolyTrack</div>
-        <div class="card" onclick="sendToParent('../sys_lib/tool_02/index.html')">Slope</div>
-        <div class="card" onclick="sendToParent('../sys_lib/tool_03/index.html')">Retro Bowl</div>
-        <div class="card" onclick="sendToParent('../sys_lib/tool_04/index.html')">BitLife</div>
-    </div>
+        <div class="card" onclick="launchGame('../sys_lib/tool_01/index.html')">PolyTrack</div>
+        <div class="card" onclick="launchGame('../sys_lib/tool_02/index.html')">Slope</div>
+        </div>
+
     <script>
-        function sendToParent(url) {
-            // This part is crucial: it turns the relative path into a full address
-            // e.g., ../sys_lib/tool_01/index.html -> https://site.neocities.org/sys_lib/tool_01/index.html
-            const absoluteURL = new URL(url, window.location.href).href;
-        
-            window.parent.postMessage({
-                type: "LAUNCH_GAME",
-                url: absoluteURL
-            }, "*");
+        function launchGame(path) {
+            const fullUrl = new URL(path, window.location.href).href;
+            // Send signal to index.html to open the tab
+            window.parent.postMessage({ type: "OPEN_GAME", url: fullUrl }, "*");
         }
     </script>
 </body>
