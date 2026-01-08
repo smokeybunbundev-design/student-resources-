@@ -5,173 +5,88 @@
     <title>Google</title>
     <link rel="icon" href="https://www.google.com/favicon.ico">
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #202124;
-            --search-bg: #ffffff;
-            --search-border: #dfe1e5;
-            --btn-bg: #f8f9fa;
-            --btn-text: #3c4043;
-            --footer-bg: #f2f2f2;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #202124;
-                --text-color: #e8eaed;
-                --search-bg: #202124;
-                --search-border: #5f6368;
-                --btn-bg: #303134;
-                --btn-text: #e8eaed;
-                --footer-bg: #171717;
-            }
-        }
-
-        body { font-family: 'Roboto', arial, sans-serif; margin: 0; background: var(--bg-color); color: var(--text-color); height: 100vh; display: flex; flex-direction: column; }
-        
-        /* Header */
-        .header { display: flex; justify-content: space-between; padding: 12px 20px; font-size: 13px; }
-        .header-right { display: flex; align-items: center; }
-        .header a { text-decoration: none; color: var(--text-color); margin-right: 15px; padding-top: 5px; }
-        .header a:hover { text-decoration: underline; }
-
-        /* Main Content */
-        .content { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: -120px; }
+        /* CSS stays the same as your reference image */
+        :root { --bg: #fff; --txt: #202124; --brd: #dfe1e5; --ftr: #f2f2f2; }
+        @media (prefers-color-scheme: dark) { :root { --bg: #202124; --txt: #e8eaed; --brd: #5f6368; --ftr: #171717; } }
+        body { font-family: arial, sans-serif; margin: 0; background: var(--bg); color: var(--txt); height: 100vh; display: flex; flex-direction: column; }
+        .header { display: flex; justify-content: flex-end; padding: 15px 20px; font-size: 13px; }
+        .header a { text-decoration: none; color: var(--txt); margin-left: 15px; }
+        .main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: -100px; }
         .logo { width: 272px; margin-bottom: 30px; }
-        
-        @media (prefers-color-scheme: dark) {
-            .logo { filter: drop-shadow(0px 0px 1px white); } /* Helps logo pop in dark mode */
-        }
-
         .search-container { width: 100%; max-width: 584px; position: relative; }
-        .search-bar { 
-            width: 100%; height: 44px; border: 1px solid var(--search-border); 
-            border-radius: 24px; background: var(--search-bg); color: var(--text-color);
-            padding: 0 45px; font-size: 16px; outline: none; box-sizing: border-box;
-        }
-        .search-bar:focus { box-shadow: 0 1px 6px rgba(32,33,36,0.28); }
-
-        .search-icon { position: absolute; left: 16px; top: 12px; fill: #9aa0a6; width: 20px; }
-        .mic-icon { position: absolute; right: 16px; top: 11px; width: 24px; cursor: pointer; }
-
+        .search-bar { width: 100%; height: 44px; border: 1px solid var(--brd); border-radius: 24px; background: var(--bg); color: var(--txt); padding: 0 45px; font-size: 16px; outline: none; box-sizing: border-box; }
         .btns { margin-top: 30px; }
-        .btn { 
-            background: var(--btn-bg); border: 1px solid var(--btn-bg); 
-            color: var(--btn-text); padding: 0 16px; line-height: 36px; 
-            min-width: 54px; text-align: center; cursor: pointer; 
-            border-radius: 4px; font-size: 14px; margin: 5px; display: inline-block;
-        }
-
-        /* Footer from Reference */
-        .footer { background: var(--footer-bg); font-size: 14px; color: #70757a; width: 100%; }
-        .footer-top { padding: 15px 30px; border-bottom: 1px solid var(--search-border); }
-        .footer-bottom { display: flex; justify-content: space-between; padding: 15px 30px; flex-wrap: wrap; }
-        .footer a { color: #70757a; text-decoration: none; margin: 0 15px; }
-
-        #arcade-ui { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; z-index: 1000; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .btn { background: var(--ftr); border: 1px solid var(--ftr); color: var(--txt); padding: 0 16px; line-height: 36px; min-width: 54px; border-radius: 4px; font-size: 14px; margin: 5px; cursor: pointer; display: inline-block; }
+        #arcade-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #0b0e14; z-index: 9999; }
+        .footer { background: var(--ftr); padding: 15px 30px; font-size: 14px; color: #70757a; position: absolute; bottom: 0; width: 100%; box-sizing: border-box; }
     </style>
 </head>
 <body>
-
-<div class="header">
-    <div class="header-left"><a href="#">About</a><a href="#">Store</a></div>
-    <div class="header-right"><a href="#">Gmail</a><a href="#">Images</a></div>
-</div>
-
-<div class="content">
-    <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png">
-    <div class="search-container">
-        <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
-        <input type="text" id="main-search" class="search-bar" autocomplete="off">
-        <img class="mic-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Google_Mic_Logo.svg">
+    <div class="header"><a href="#">Gmail</a><a href="#">Images</a></div>
+    <div class="main">
+        <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png">
+        <div class="search-container">
+            <input type="text" id="search" class="search-bar" autocomplete="off">
+        </div>
+        <div class="btns"><div class="btn" onclick="runSearch()">Google Search</div><div class="btn">I'm Feeling Lucky</div></div>
     </div>
-    <div class="btns">
-        <div class="btn" onclick="handleSearch()">Google Search</div>
-        <div class="btn">I'm Feeling Lucky</div>
-    </div>
-</div>
+    <div class="footer">United States</div>
 
-<div class="footer">
-    <div class="footer-top">United States</div>
-    <div class="footer-bottom">
-        <div><a href="#">Advertising</a><a href="#">Business</a><a href="#">How Search works</a></div>
-        <div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Settings</a></div>
-    </div>
-</div>
+    <div id="arcade-overlay"><iframe id="arcade-frame" src="src/dashboard.html" style="width:100%;height:100%;border:none;"></iframe></div>
 
-<div id="arcade-ui"><iframe id="arcade-frame" src="src/dashboard.html"></iframe></div>
+    <script>
+        const searchInput = document.getElementById('search');
+        const overlay = document.getElementById('arcade-overlay');
 
-<script>
-    const search = document.getElementById('main-search');
-    const ui = document.getElementById('arcade-ui');
-
-    function handleSearch() {
-        const val = search.value.toLowerCase().trim();
-        
-        if (val === "play") {
-            // THE MAC PRANK
-            const isMac = navigator.platform.toUpperCase().indexOf('MAC') !== -1;
-            if (isMac) {
-                window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-                return;
-            }
+        function runSearch() {
+            const query = searchInput.value.toLowerCase().trim();
             
-            // Success for everyone else
-            ui.style.display = "block";
-            document.title = "Google Docs";
-        } else if (val !== "") {
-            window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(val);
-        }
-    }
-
-    search.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
-
-    // Escape Key to Panic Lock
-    window.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") {
-            ui.style.display = "none";
-            document.title = "Google";
-            document.getElementById('arcade-frame').src = document.getElementById('arcade-frame').src;
-        }
-    });
-
-    // Auto-lock when tab is switched
-    window.onblur = () => {
-        ui.style.display = "none";
-        document.title = "Google";
-    };
-
-    // Receiver for launching games in Ghost Tabs
-        window.addEventListener("message", (event) => {
-            if (event.data.type === "LAUNCH_GAME") {
-                // Create a Ghost Tab
-                const ghost = window.open('about:blank', '_blank');
-                
-                if (!ghost) {
-                    alert("Please allow pop-ups to play games!");
+            if (query === "play") {
+                // MAC PRANK
+                if (navigator.platform.toUpperCase().indexOf('MAC') !== -1) {
+                    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
                     return;
                 }
-        
-                // Setup the Ghost Tab's metadata
-                const doc = ghost.document;
-                doc.title = "Google Docs";
-                const icon = doc.createElement('link');
-                icon.rel = 'icon'; 
-                icon.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
-                doc.head.appendChild(icon);
-        
-                // Inject the game using a specific "Write" command
-                // This is the most compatible way to prevent the main page from refreshing
-                doc.write(`
-                    <body style="margin:0;overflow:hidden">
-                        <iframe src="${event.data.url}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;border:none;"></iframe>
-                    </body>
-                `);
-                doc.close(); 
+                overlay.style.display = "block";
+                document.title = "Google Docs";
+            } else if (query !== "") {
+                window.location.href = "https://google.com/search?q=" + encodeURIComponent(query);
+            }
+        }
+
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') runSearch(); });
+
+        // ESCAPE TO LOCK
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                overlay.style.display = "none";
+                document.title = "Google";
+                searchInput.value = "";
             }
         });
-    });
-</script>
+
+        // GHOST LAUNCHER (The Fix for the Refresh Issue)
+        window.addEventListener("message", (e) => {
+            if (e.data.type === "OPEN_GAME") {
+                const url = e.data.url;
+                const win = window.open('about:blank', '_blank');
+                if (!win) return alert("Pop-ups blocked!");
+
+                const html = `
+                    <html>
+                    <head>
+                        <title>Google Docs</title>
+                        <link rel="icon" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico">
+                        <style>body,html,iframe{margin:0;padding:0;height:100%;width:100%;overflow:hidden;border:none;}</style>
+                    </head>
+                    <body><iframe src="${url}"></iframe></body>
+                    </html>
+                `;
+                win.document.open();
+                win.document.write(html);
+                win.document.close();
+            }
+        });
+    </script>
 </body>
 </html>
