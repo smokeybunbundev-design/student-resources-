@@ -5,35 +5,91 @@
     <title>Google</title>
     <link rel="icon" href="https://www.google.com/favicon.ico">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; }
-        iframe { width: 100vw; height: 100vh; border: none; position: absolute; top: 0; left: 0; }
-        #smart-listener { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: transparent; pointer-events: none; }
-        #arcade-view { z-index: 1; display: none; }
-        #google-view { z-index: 2; display: block; }
+        body { font-family: arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; background: white; }
+        .nav { width: 100%; display: flex; justify-content: flex-end; padding: 20px; box-sizing: border-box; font-size: 13px; color: #000; }
+        .nav a { margin-left: 15px; text-decoration: none; color: rgba(0,0,0,0.87); }
+        .main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin-top: -100px; }
+        .logo { width: 272px; margin-bottom: 30px; }
+        .search-box { width: 100%; max-width: 584px; position: relative; }
+        .search-input { width: 100%; height: 44px; border: 1px solid #dfe1e5; border-radius: 24px; padding: 0 45px; font-size: 16px; outline: none; transition: box-shadow 0.2s; }
+        .search-input:hover, .search-input:focus { box-shadow: 0 1px 6px rgba(32,33,36,0.28); border-color: rgba(223,225,229,0); }
+        .search-icons { position: absolute; top: 12px; left: 15px; color: #9aa0a6; }
+        .mic-icon { position: absolute; top: 10px; right: 15px; cursor: pointer; }
+        .buttons { margin-top: 30px; }
+        .btn { background: #f8f9fa; border: 1px solid #f8f9fa; color: #3c4043; padding: 0 16px; line-height: 36px; min-width: 54px; text-align: center; cursor: pointer; border-radius: 4px; font-size: 14px; margin: 5px; }
+        .btn:hover { border: 1px solid #dadce0; color: #202124; }
+        #arcade-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #0b0e14; z-index: 9999; }
+        #arcade-frame { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
-    <div id="smart-listener" tabindex="0"></div>
-    <iframe id="arcade-view" src="src/dashboard.html"></iframe>
-    <iframe id="google-view" src="https://www.google.com/search?igu=1"></iframe>
+    <div class="nav">
+        <a href="#">Gmail</a> <a href="#">Images</a>
+        <img src="https://img.icons8.com/material-outlined/24/000000/menu--v1.png" style="margin-left:15px; opacity:0.6">
+    </div>
+
+    <div class="main">
+        <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google">
+        <div class="search-box">
+            <span class="search-icons">🔍</span>
+            <input type="text" id="search-bar" class="search-input" autocomplete="off">
+            <img class="mic-icon" src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Google_Mic_Logo.svg" width="24">
+        </div>
+        <div class="buttons">
+            <div class="btn" onclick="checkSearch()">Google Search</div>
+            <div class="btn">I'm Feeling Lucky</div>
+        </div>
+    </div>
+
+    <div id="arcade-container">
+        <iframe id="arcade-frame" src="src/dashboard.html"></iframe>
+    </div>
 
     <script>
-        const googleView = document.getElementById('google-view');
-        const arcadeView = document.getElementById('arcade-view');
-        const listener = document.getElementById('smart-listener');
-        let inputBuffer = "";
-        const secretKeyword = "play";
+        const searchBar = document.getElementById('search-bar');
+        const container = document.getElementById('arcade-container');
+        const frame = document.getElementById('arcade-frame');
 
-        // Listen for "Launch" signals from the Dashboard Iframe
+        function checkSearch() {
+            if (searchBar.value.toLowerCase().trim() === "play") {
+                unlock();
+            } else if (searchBar.value.trim() !== "") {
+                // If they search anything else, actually send them to real Google so it looks real
+                window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(searchBar.value);
+            }
+        }
+
+        searchBar.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkSearch();
+        });
+
+        function unlock() {
+            container.style.display = "block";
+            document.title = "Google Docs";
+            searchBar.value = "";
+        }
+
+        function lock() {
+            container.style.display = "none";
+            document.title = "Google";
+            // Important: This stops the game audio when you lock the page
+            frame.src = frame.src; 
+        }
+
+        // TAB PROTECTION: Panic lock if you switch tabs
+        window.onblur = () => { lock(); };
+
+        // Panic Key: Escape
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") lock();
+        });
+
+        // Communication receiver for launching games in about:blank
         window.addEventListener("message", (event) => {
             if (event.data.type === "LAUNCH_GAME") {
                 const ghost = window.open('about:blank', '_blank');
                 const doc = ghost.document;
                 doc.title = "Google Docs";
-                const icon = doc.createElement('link');
-                icon.rel = 'icon'; icon.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
-                doc.head.appendChild(icon);
-
                 const frame = doc.createElement('iframe');
                 frame.src = event.data.url;
                 frame.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; border:none;";
@@ -41,20 +97,6 @@
                 doc.body.style.margin = "0";
             }
         });
-
-        function maintainFocus() { if (googleView.style.display !== "none") listener.focus(); }
-        window.addEventListener('mousedown', () => setTimeout(maintainFocus, 1000));
-        window.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") { lock(); return; }
-            inputBuffer += e.key.toLowerCase();
-            if (inputBuffer.length > 10) inputBuffer = inputBuffer.substring(inputBuffer.length - 10);
-            if (inputBuffer.includes(secretKeyword)) { unlock(); inputBuffer = ""; }
-        });
-
-        function unlock() { googleView.style.display = "none"; arcadeView.style.display = "block"; document.title = "Google Docs"; }
-        function lock() { googleView.style.display = "block"; arcadeView.style.display = "none"; document.title = "Google"; maintainFocus(); }
-        window.onblur = () => { lock(); };
-        window.onload = () => { maintainFocus(); };
     </script>
 </body>
 </html>
