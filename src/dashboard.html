@@ -2,30 +2,74 @@
 <html>
 <head>
     <style>
-        body { background: #0b0e14; color: white; font-family: sans-serif; padding: 40px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; }
-        .card { 
-            background: #1c212c; border-radius: 12px; padding: 20px; text-align: center; 
-            transition: 0.3s; cursor: pointer; border: 1px solid #2d333f;
+        body { 
+            background: #0b0e14; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 40px; 
+            margin: 0;
         }
-        .card:hover { transform: translateY(-5px); border-color: #38bdf8; box-shadow: 0 5px 15px rgba(56, 189, 248, 0.2); }
-        .card img { width: 50px; height: 50px; margin-bottom: 10px; opacity: 0.8; }
-        h1 { font-weight: 200; color: #38bdf8; letter-spacing: 2px; }
+        h1 { font-weight: 200; color: #38bdf8; letter-spacing: 3px; margin-bottom: 40px; }
+        
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .card { 
+            background: #1c212c; 
+            border: 1px solid #2d333f; 
+            border-radius: 16px; 
+            padding: 20px; 
+            text-align: center; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+        }
+
+        .card:hover { 
+            transform: translateY(-8px); 
+            border-color: #38bdf8; 
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2); 
+        }
+
+        .card img { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 12px; 
+            margin-bottom: 15px; 
+        }
+
+        .card span { 
+            display: block; 
+            font-size: 14px; 
+            font-weight: 500; 
+            color: #cbd5e1;
+        }
     </style>
 </head>
 <body>
-    <h1>SYSTEM_RESOURCES_V5</h1>
+    <h1>CENTRAL_HUB_v6</h1>
     <div class="grid">
-        <div class="card" onclick="location.href='/sys_lib/tool_01/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_01 (PolyTrack)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_02/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_02 (Slope)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_03/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_03 (Retro Bowl)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_04/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_04 (BitLife)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_05/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_05 (Tetris)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_06/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_06 (1v1.LOL)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_07/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_07 (Cookie Clicker)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_08/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_08 (Tunnel Rush)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_09/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_09 (Drift Hunters)</span></div>
-        <div class="card" onclick="location.href='/sys_lib/tool_10/index.html'"><img src="https://img.icons8.com/fluency/96/generic-sorting.png"><span>Tool_10 (Run 3)</span></div>
+        <div class="card" onclick="location.href='../sys_lib/tool_01/index.html'">
+            <img src="https://img.icons8.com/fluency/96/race-car.png">
+            <span>PolyTrack</span>
+        </div>
+
+        <div class="card" onclick="location.href='../sys_lib/tool_02/index.html'">
+            <img src="https://img.icons8.com/fluency/96/sphere.png">
+            <span>Slope</span>
+        </div>
+
+        <div class="card" onclick="location.href='../sys_lib/tool_03/index.html'">
+            <img src="https://img.icons8.com/fluency/96/football.png">
+            <span>Retro Bowl</span>
+        </div>
+
+        <div class="card" onclick="location.href='../sys_lib/tool_04/index.html'">
+            <img src="https://img.icons8.com/fluency/96/life-cycle.png">
+            <span>BitLife</span>
+        </div>
     </div>
 </body>
 </html>
