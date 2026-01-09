@@ -34,6 +34,56 @@
 
 		<script src="lib/ammo.js" defer></script>
 
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<script>
+		    // 1. Connection Details
+		    const SUPABASE_URL = 'https://your-project-id.supabase.co';
+		    const SUPABASE_KEY = 'your-anon-public-key';
+		    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+		
+		    // 2. Global variable to store current track
+		    window.currentTrackID = "standard_1"; 
+		
+		    // 3. Intercept function for your "Submit Score"
+		    async function submitToSupabase(username, score) {
+		        const { data, error } = await supabaseClient
+		            .from('high_scores')
+		            .insert([{ 
+		                username: username, 
+		                score: score, 
+		                track_id: window.currentTrackID 
+		            }]);
+		        if (!error) console.log("Score synced!");
+		    }
+		
+		    // 4. Function to fetch and display in your CSS container
+		    async function refreshLeaderboard() {
+		        const { data: scores } = await supabaseClient
+		            .from('high_scores')
+		            .select('*')
+		            .eq('track_id', window.currentTrackID)
+		            .order('score', { ascending: true })
+		            .limit(10);
+		
+		        const container = document.querySelector('.leaderboard > .container');
+		        if (!container) return;
+		        
+		        container.innerHTML = ''; // Clear previous
+		        scores.forEach((entry, i) => {
+		            const btn = document.createElement('button');
+		            btn.innerHTML = `
+		                <img src="assets/user_icon.png">
+		                <div class="left"><p class="name">${i+1}. ${entry.username}</p></div>
+		                <div class="right">
+		                    <p class="score">${entry.score.toFixed(3)}</p>
+		                    <div class="verified-state verified">VERIFIED</div>
+		                </div>`;
+		            container.appendChild(btn);
+		        });
+		    }
+		</script>
+
 		<script type="module" src="dist/main.bundle.js" defer></script>
 	</body>
 </html>
+
