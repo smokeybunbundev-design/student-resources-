@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; cursor: none; } /* Custom cursor for gamer feel */
+        * { box-sizing: border-box; cursor: none; }
         
         body { 
             margin: 0; padding: 40px 20px; min-height: 100vh;
@@ -12,11 +13,10 @@
             background: #050505; overflow-x: hidden;
         }
 
-        /* Canvas stays behind everything */
+        /* Polygon Background Canvas */
         #canvas-bg {
             position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
+            width: 100%; height: 100%; z-index: -1;
         }
 
         h1 { 
@@ -34,36 +34,34 @@
         .card { 
             background: rgba(10, 10, 10, 0.7); 
             border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 20px; padding: 25px; cursor: pointer; 
+            border-radius: 24px; padding: 30px; cursor: pointer; 
             transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; flex-direction: column; align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
 
         .card:hover { 
-            transform: scale(1.05);
+            transform: scale(1.05) translateY(-10px);
             border-color: #38bdf8;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
             background: rgba(0, 0, 0, 0.9);
         }
 
         .game-icon {
-            width: 110px; height: 110px; border-radius: 15px;
-            object-fit: cover; margin-bottom: 15px;
-            border: 2px solid #222; transition: 0.3s;
+            width: 130px; height: 130px; border-radius: 20px;
+            object-fit: cover; margin-bottom: 20px;
+            border: 3px solid #222; transition: 0.3s;
         }
 
-        .card:hover .game-icon { border-color: #38bdf8; filter: brightness(1.2); }
+        .card:hover .game-icon { border-color: #38bdf8; transform: rotate(3deg); }
 
-        .title { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
-        .category { font-size: 10px; color: #38bdf8; margin-top: 5px; opacity: 0.8; }
+        .title { font-size: 22px; font-weight: 900; letter-spacing: 1px; text-align: center; }
+        .id-badge { font-size: 10px; color: #38bdf8; margin-top: 10px; opacity: 0.6; }
 
-        /* Custom Cursor Follower */
         #cursor {
             width: 20px; height: 20px; border: 2px solid #38bdf8;
             border-radius: 50%; position: fixed; pointer-events: none;
             z-index: 10000; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
         }
     </style>
 </head>
@@ -74,31 +72,57 @@
 
     <h1>System Online</h1>
 
-    <div class="grid">
-        <div class="card" onclick="launch('../sys_lib/tool_01/index.html')">
-            <img src="assets/tool_01.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/controller.png'">
-            <div class="title">PolyTrack</div>
-            <div class="category">Simulator</div>
+    <div class="grid" id="game-grid">
         </div>
-        <div class="card" onclick="launch('../sys_lib/tool_02/index.html')">
-            <img src="assets/tool_02.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/gravity.png'">
-            <div class="title">Slope</div>
-            <div class="category">Arcade</div>
-        </div>
-        <div class="card" onclick="launch('../sys_lib/tool_03/index.html')">
-            <img src="assets/tool_03.png" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/american-football.png'">
-            <div class="title">Retro Bowl</div>
-            <div class="category">Sports</div>
-        </div>
-    </div>
 
     <script>
-        // --- CUSTOM CURSOR ---
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        const grid = document.getElementById('game-grid');
+
+        // 1. FETCH AND PARSE KEY.TXT
+        async function loadGames() {
+            try {
+                const response = await fetch('../sys_lib/key.txt');
+                const text = await response.text();
+                const lines = text.split('\n');
+
+                lines.forEach(line => {
+                    if (line.includes('-')) {
+                        const parts = line.split('-');
+                        const id = parts[0].trim(); // e.g. "01"
+                        const name = parts[1].trim(); // e.g. "PolyTrack"
+
+                        if (name && id) {
+                            createCard(id, name);
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("Error loading key.txt:", err);
+            }
+        }
+
+        // 2. CREATE CARD HTML
+        function createCard(id, name) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Points to tool_01, tool_02, etc.
+            const gamePath = `../sys_lib/tool_${id}/index.html`;
+            const iconPath = `assets/tool_${id}.png`;
+
+            card.onclick = () => launch(gamePath);
+            
+            card.innerHTML = `
+                <img src="${iconPath}" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/controller.png'">
+                <div class="title">${name}</div>
+                <div class="id-badge">SYS_ID: ${id}</div>
+            `;
+            grid.appendChild(card);
+        }
+
+        function launch(url) {
+            const absURL = new URL(url, window.location.href).href;
+            window.parent.postMessage({ type: "OPEN_GAME", url: absURL }, "*");
+        }
 
         // --- POLYGON BACKGROUND ENGINE ---
         const canvas = document.getElementById('canvas-bg');
@@ -106,45 +130,37 @@
         let particles = [];
         const mouse = { x: null, y: null, radius: 150 };
 
-        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('mousemove', e => { 
+            mouse.x = e.clientX; 
+            mouse.y = e.clientY;
+            document.getElementById('cursor').style.left = e.clientX + 'px';
+            document.getElementById('cursor').style.top = e.clientY + 'px';
+        });
 
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 30) + 1;
-                this.velocity = { x: (Math.random() - 0.5) * 1.5, y: (Math.random() - 0.5) * 1.5 };
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(56, 189, 248, 0.8)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
+                this.size = 2;
+                this.velocity = { x: (Math.random() - 0.5) * 1, y: (Math.random() - 0.5) * 1 };
             }
             update() {
-                // Drift animation
                 this.x += this.velocity.x;
                 this.y += this.velocity.y;
-
-                // Bounce off edges
                 if (this.x > canvas.width || this.x < 0) this.velocity.x *= -1;
                 if (this.y > canvas.height || this.y < 0) this.velocity.y *= -1;
 
-                // Mouse Interaction
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < mouse.radius) {
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    const directionX = dx / distance;
-                    const directionY = dy / distance;
-                    this.x -= directionX * force * 5;
-                    this.y -= directionY * force * 5;
+                    this.x -= dx / 20;
+                    this.y -= dy / 20;
                 }
+            }
+            draw() {
+                ctx.fillStyle = '#38bdf8';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
             }
         }
 
@@ -152,40 +168,30 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 100; i++) particles.push(new Particle());
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].draw();
-                particles[i].update();
-                // Connect lines
+            particles.forEach((p, i) => {
+                p.update(); p.draw();
                 for (let j = i; j < particles.length; j++) {
-                    let dx = particles[i].x - particles[j].x;
-                    let dy = particles[i].y - particles[j].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 150) {
-                        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - (distance/150)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
+                    let dx = p.x - particles[j].x;
+                    let dy = p.y - particles[j].y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - (dist/150)})`;
+                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
                     }
                 }
-            }
+            });
             requestAnimationFrame(animate);
         }
 
         window.addEventListener('resize', init);
         init();
         animate();
-
-        function launch(url) {
-            const absURL = new URL(url, window.location.href).href;
-            window.parent.postMessage({ type: "OPEN_GAME", url: absURL }, "*");
-        }
+        loadGames(); // Run the fetch
     </script>
 </body>
 </html>
