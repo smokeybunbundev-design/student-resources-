@@ -85,7 +85,7 @@
         .title { font-size: 22px; font-weight: 900; letter-spacing: 1px; text-align: center; }
         .id-badge { font-size: 10px; color: #38bdf8; margin-top: 10px; opacity: 0.6; }
 
-        /* Request Button Styling */
+        /* Request Button */
         .request-btn {
             position: fixed;
             bottom: 30px;
@@ -104,14 +104,12 @@
             transition: 0.3s;
             backdrop-filter: blur(10px);
             z-index: 1000;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
         }
 
         .request-btn:hover {
             background: #38bdf8;
             color: #000;
             box-shadow: 0 0 25px #38bdf8;
-            transform: translateY(-5px);
         }
 
         #cursor {
@@ -142,21 +140,21 @@
         const searchInput = document.getElementById('game-search');
         let gameData = [];
 
-        // 1. FETCH AND PARSE KEY.TXT
+        // 1. FETCH AND PARSE KEY.TXT (New format: One name per line)
         async function loadGames() {
             try {
                 const response = await fetch('../sys_lib/key.txt');
                 const text = await response.text();
                 const lines = text.split('\n');
 
+                // We use the index (+1) to create the tool_ID
                 gameData = lines
-                    .filter(line => line.includes('-'))
-                    .map(line => {
-                        const parts = line.split('-');
-                        return {
-                            id: parts[0].trim(),
-                            name: parts[1].trim()
-                        };
+                    .map(line => line.trim())
+                    .filter(line => line !== "") // Skip empty lines
+                    .map((name, index) => {
+                        // Formats number to 01, 02, 10, etc.
+                        const id = (index + 1).toString().padStart(2, '0');
+                        return { id, name };
                     });
 
                 renderGames(gameData);
@@ -179,18 +177,17 @@
                 card.innerHTML = `
                     <img src="${iconPath}" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/controller.png'">
                     <div class="title">${game.name}</div>
-                    <div class="id-badge">SYS_ID: ${game.id}</div>
+                    <div class="id-badge">UNIT: ${game.id}</div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // 3. FILTER LOGIC
+        // 3. SEARCH FILTER
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = gameData.filter(game => 
-                game.name.toLowerCase().includes(term) || 
-                game.id.includes(term)
+                game.name.toLowerCase().includes(term)
             );
             renderGames(filtered);
         });
@@ -225,7 +222,6 @@
                 this.y += this.velocity.y;
                 if (this.x > canvas.width || this.x < 0) this.velocity.x *= -1;
                 if (this.y > canvas.height || this.y < 0) this.velocity.y *= -1;
-
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
