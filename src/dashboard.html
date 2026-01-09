@@ -21,8 +21,35 @@
 
         h1 { 
             font-size: 2.5rem; letter-spacing: 8px; color: #fff;
-            text-shadow: 0 0 15px #38bdf8; margin-bottom: 50px;
+            text-shadow: 0 0 15px #38bdf8; margin-bottom: 30px;
             text-transform: uppercase; pointer-events: none;
+        }
+
+        /* Search Bar Styling */
+        .search-container {
+            width: 100%;
+            max-width: 584px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        #game-search {
+            width: 100%;
+            padding: 15px 25px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 30px;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        #game-search:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
 
         .grid { 
@@ -72,11 +99,17 @@
 
     <h1>System Online</h1>
 
+    <div class="search-container">
+        <input type="text" id="game-search" placeholder="SEARCH DATABASE..." autocomplete="off">
+    </div>
+
     <div class="grid" id="game-grid">
         </div>
 
     <script>
         const grid = document.getElementById('game-grid');
+        const searchInput = document.getElementById('game-search');
+        let gameData = [];
 
         // 1. FETCH AND PARSE KEY.TXT
         async function loadGames() {
@@ -85,39 +118,51 @@
                 const text = await response.text();
                 const lines = text.split('\n');
 
-                lines.forEach(line => {
-                    if (line.includes('-')) {
+                gameData = lines
+                    .filter(line => line.includes('-'))
+                    .map(line => {
                         const parts = line.split('-');
-                        const id = parts[0].trim(); // e.g. "01"
-                        const name = parts[1].trim(); // e.g. "PolyTrack"
+                        return {
+                            id: parts[0].trim(),
+                            name: parts[1].trim()
+                        };
+                    });
 
-                        if (name && id) {
-                            createCard(id, name);
-                        }
-                    }
-                });
+                renderGames(gameData);
             } catch (err) {
                 console.error("Error loading key.txt:", err);
             }
         }
 
-        // 2. CREATE CARD HTML
-        function createCard(id, name) {
-            const card = document.createElement('div');
-            card.className = 'card';
-            // Points to tool_01, tool_02, etc.
-            const gamePath = `../sys_lib/tool_${id}/index.html`;
-            const iconPath = `assets/tool_${id}.png`;
+        // 2. RENDER CARDS
+        function renderGames(games) {
+            grid.innerHTML = '';
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const gamePath = `../sys_lib/tool_${game.id}/index.html`;
+                const iconPath = `assets/tool_${game.id}.png`;
 
-            card.onclick = () => launch(gamePath);
-            
-            card.innerHTML = `
-                <img src="${iconPath}" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/controller.png'">
-                <div class="title">${name}</div>
-                <div class="id-badge">SYS_ID: ${id}</div>
-            `;
-            grid.appendChild(card);
+                card.onclick = () => launch(gamePath);
+                
+                card.innerHTML = `
+                    <img src="${iconPath}" class="game-icon" onerror="this.src='https://img.icons8.com/neon/96/controller.png'">
+                    <div class="title">${game.name}</div>
+                    <div class="id-badge">SYS_ID: ${game.id}</div>
+                `;
+                grid.appendChild(card);
+            });
         }
+
+        // 3. FILTER LOGIC
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = gameData.filter(game => 
+                game.name.toLowerCase().includes(term) || 
+                game.id.includes(term)
+            );
+            renderGames(filtered);
+        });
 
         function launch(url) {
             const absURL = new URL(url, window.location.href).href;
@@ -154,8 +199,8 @@
                 let dy = mouse.y - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance < mouse.radius) {
-                    this.x -= dx / 20;
-                    this.y -= dy / 20;
+                    this.x -= dx / 25;
+                    this.y -= dy / 25;
                 }
             }
             draw() {
@@ -191,7 +236,7 @@
         window.addEventListener('resize', init);
         init();
         animate();
-        loadGames(); // Run the fetch
+        loadGames();
     </script>
 </body>
 </html>
