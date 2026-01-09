@@ -1,1 +1,1 @@
-# student-resources-
+amazingeducationschoology.run.place
