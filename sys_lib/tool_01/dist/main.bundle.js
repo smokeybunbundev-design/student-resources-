@@ -22824,7 +22824,10 @@
 					})).catch((e => {
 						if (!t.isCancelled) {
 							const e = document.createElement("p");
-							e.className = "error-message", e.textContent = yT(this, $S, "f").get("Error: Failed to load leaderboard"), yT(this, lT, "f").appendChild(e)
+							// Instead of showing an error, try loading from Supabase
+							window.fetchSupabaseLeaderboard(currentTrackId).then(scores => {
+							    this.renderMySupabaseData(scores); 
+							});
 						}
 						console.error(e)
 					})).finally((() => {
