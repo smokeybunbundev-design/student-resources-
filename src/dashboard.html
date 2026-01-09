@@ -7,7 +7,7 @@
         * { box-sizing: border-box; cursor: none; }
         
         body { 
-            margin: 0; padding: 40px 20px; min-height: 100vh;
+            margin: 0; padding: 40px 20px 100px 20px; min-height: 100vh;
             color: #fff; font-family: 'Orbitron', sans-serif;
             display: flex; flex-direction: column; align-items: center;
             background: #050505; overflow-x: hidden;
@@ -85,6 +85,35 @@
         .title { font-size: 22px; font-weight: 900; letter-spacing: 1px; text-align: center; }
         .id-badge { font-size: 10px; color: #38bdf8; margin-top: 10px; opacity: 0.6; }
 
+        /* Request Button Styling */
+        .request-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 24px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid #38bdf8;
+            border-radius: 12px;
+            color: #38bdf8;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .request-btn:hover {
+            background: #38bdf8;
+            color: #000;
+            box-shadow: 0 0 25px #38bdf8;
+            transform: translateY(-5px);
+        }
+
         #cursor {
             width: 20px; height: 20px; border: 2px solid #38bdf8;
             border-radius: 50%; position: fixed; pointer-events: none;
@@ -105,6 +134,8 @@
 
     <div class="grid" id="game-grid">
         </div>
+
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdkV5Bj1Z-AW04niGlSWa7OLNwizRWDM-npA9lCStDadnxStw/viewform?usp=header" target="_blank" class="request-btn">Request a Game</a>
 
     <script>
         const grid = document.getElementById('game-grid');
