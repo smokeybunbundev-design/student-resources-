@@ -1,1 +1,2 @@
 amazingeducationschoology.run.place
+sigma
