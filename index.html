@@ -106,9 +106,9 @@
 
     function checkUnlock() {
         const val = input.value.toLowerCase().trim();
-        if (val === "play" || "playmac") {
+        if (val === "play") {
             const isMac = navigator.platform.toUpperCase().indexOf('MAC') !== -1;
-            if (isMac && val="play") {
+            if (isMac) {
                 window.location.href = "https://youtu.be/6n3pFFPSlW4?si=3GZQg1RbxriHT-SJ";
                 return;
             }
