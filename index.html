@@ -106,14 +106,14 @@
 
     function checkUnlock() {
         const val = input.value.toLowerCase().trim();
-        if (val === "play") {
+        if (val === "play" || "playmac") {
             const isMac = navigator.platform.toUpperCase().indexOf('MAC') !== -1;
-            if (isMac) {
+            if (isMac && val="play") {
                 window.location.href = "https://youtu.be/6n3pFFPSlW4?si=3GZQg1RbxriHT-SJ";
                 return;
             }
             overlay.style.display = "block";
-            document.title = "Google Docs";
+            document.title = "Goole";
         } else if (val !== "") {
             window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(val);
         }
